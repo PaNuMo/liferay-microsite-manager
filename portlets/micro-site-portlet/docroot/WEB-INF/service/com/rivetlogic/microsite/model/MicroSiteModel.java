@@ -189,6 +189,20 @@ public interface MicroSiteModel extends BaseModel<MicroSite>, GroupedModel {
 	@Override
 	public void setGroupId(long groupId);
 
+	/**
+	 * Returns the site ID of this micro site.
+	 *
+	 * @return the site ID of this micro site
+	 */
+	public long getSiteId();
+
+	/**
+	 * Sets the site ID of this micro site.
+	 *
+	 * @param siteId the site ID of this micro site
+	 */
+	public void setSiteId(long siteId);
+
 	@Override
 	public boolean isNew();
 

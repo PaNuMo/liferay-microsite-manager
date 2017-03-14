@@ -60,6 +60,8 @@ public class SiteRequestWrapper implements SiteRequest,
 		attributes.put("description", getDescription());
 		attributes.put("status", getStatus());
 		attributes.put("response", getResponse());
+		attributes.put("siteId", getSiteId());
+		attributes.put("admin", getAdmin());
 
 		return attributes;
 	}
@@ -124,6 +126,18 @@ public class SiteRequestWrapper implements SiteRequest,
 
 		if (response != null) {
 			setResponse(response);
+		}
+
+		Long siteId = (Long)attributes.get("siteId");
+
+		if (siteId != null) {
+			setSiteId(siteId);
+		}
+
+		Boolean admin = (Boolean)attributes.get("admin");
+
+		if (admin != null) {
+			setAdmin(admin);
 		}
 	}
 
@@ -367,6 +381,56 @@ public class SiteRequestWrapper implements SiteRequest,
 	@Override
 	public void setResponse(java.lang.String response) {
 		_siteRequest.setResponse(response);
+	}
+
+	/**
+	* Returns the site ID of this Site Request.
+	*
+	* @return the site ID of this Site Request
+	*/
+	@Override
+	public long getSiteId() {
+		return _siteRequest.getSiteId();
+	}
+
+	/**
+	* Sets the site ID of this Site Request.
+	*
+	* @param siteId the site ID of this Site Request
+	*/
+	@Override
+	public void setSiteId(long siteId) {
+		_siteRequest.setSiteId(siteId);
+	}
+
+	/**
+	* Returns the admin of this Site Request.
+	*
+	* @return the admin of this Site Request
+	*/
+	@Override
+	public boolean getAdmin() {
+		return _siteRequest.getAdmin();
+	}
+
+	/**
+	* Returns <code>true</code> if this Site Request is admin.
+	*
+	* @return <code>true</code> if this Site Request is admin; <code>false</code> otherwise
+	*/
+	@Override
+	public boolean isAdmin() {
+		return _siteRequest.isAdmin();
+	}
+
+	/**
+	* Sets whether this Site Request is admin.
+	*
+	* @param admin the admin of this Site Request
+	*/
+	@Override
+	public void setAdmin(boolean admin) {
+		_siteRequest.setAdmin(admin);
 	}
 
 	@Override

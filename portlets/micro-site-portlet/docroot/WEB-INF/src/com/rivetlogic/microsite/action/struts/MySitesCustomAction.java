@@ -3,6 +3,8 @@ package com.rivetlogic.microsite.action.struts;
 import com.liferay.portal.kernel.struts.BaseStrutsPortletAction;
 import com.liferay.portal.kernel.struts.StrutsPortletAction;
 import com.liferay.portal.kernel.util.WebKeys;
+import com.liferay.portal.service.ServiceContext;
+import com.liferay.portal.service.ServiceContextFactory;
 import com.liferay.portal.theme.ThemeDisplay;
 import com.rivetlogic.microsite.model.SiteRequest;
 import com.rivetlogic.microsite.service.SiteRequestLocalServiceUtil;
@@ -28,26 +30,32 @@ public class MySitesCustomAction extends BaseStrutsPortletAction {
     public void processAction(StrutsPortletAction originalStrutsPortletAction, PortletConfig portletConfig,
             ActionRequest actionRequest, ActionResponse actionResponse) throws Exception {
 
-        ThemeDisplay themeDisplay = (ThemeDisplay) actionRequest.getAttribute(WebKeys.THEME_DISPLAY);
+        if(actionRequest.getParameter("add_site") != null) {
+        	ServiceContext serviceContext = ServiceContextFactory.getInstance(MySitesCustomAction.class.getName(), actionRequest);
+            ThemeDisplay themeDisplay = (ThemeDisplay) actionRequest.getAttribute(WebKeys.THEME_DISPLAY);
+            
+            SiteRequestLocalServiceUtil.add(
+                    themeDisplay.getCompanyGroupId(),
+                    themeDisplay.getScopeGroupId(),
+                    themeDisplay.getUserId(),
+                    actionRequest.getParameter(MicroSiteConstants.SITE_REQUEST_NAME),
+                    actionRequest.getParameter(MicroSiteConstants.SITE_REQUEST_DESCRIPTION),
+                    serviceContext
+                    );
+        }
         
-        SiteRequestLocalServiceUtil.add(
-                themeDisplay.getCompanyGroupId(),
-                themeDisplay.getScopeGroupId(),
-                themeDisplay.getUserId(),
-                actionRequest.getParameter(MicroSiteConstants.SITE_REQUEST_NAME),
-                actionRequest.getParameter(MicroSiteConstants.SITE_REQUEST_DESCRIPTION)
-                );
-        
-        actionResponse.sendRedirect(actionRequest.getParameter("redirect"));
-        
-        super.processAction(originalStrutsPortletAction, portletConfig, actionRequest, actionResponse);
+        if(originalStrutsPortletAction != null) {
+            originalStrutsPortletAction.processAction(portletConfig, actionRequest, actionResponse);
+        } else {
+            actionResponse.sendRedirect(actionRequest.getParameter("redirect"));
+        }
     }
     
     @Override
     public String render(StrutsPortletAction originalStrutsPortletAction, PortletConfig portletConfig,
             RenderRequest renderRequest, RenderResponse renderResponse) throws Exception {
-        
-        ThemeDisplay themeDisplay = (ThemeDisplay) renderRequest.getAttribute(WebKeys.THEME_DISPLAY);
+
+ThemeDisplay themeDisplay = (ThemeDisplay) renderRequest.getAttribute(WebKeys.THEME_DISPLAY);
         
         List siteRequestValues = new ArrayList();
         
@@ -66,20 +74,18 @@ public class MySitesCustomAction extends BaseStrutsPortletAction {
                     values.put("response", siteRequest.getResponse());
                 }
                 values.put("modifiedDate", siteRequest.getModifiedDate());
+                values.put("admin", siteRequest.isAdmin());
                 siteRequestValues.add(values);
             }
-            
         }
        
         renderRequest.setAttribute(MicroSiteConstants.SITE_REQUESTS_LIST, siteRequestValues);
-        
         return originalStrutsPortletAction.render(portletConfig, renderRequest, renderResponse);
     }
     
     @Override
     public void serveResource(StrutsPortletAction originalStrutsPortletAction, PortletConfig portletConfig,
             ResourceRequest resourceRequest, ResourceResponse resourceResponse) throws Exception {
-        
         originalStrutsPortletAction.serveResource(portletConfig, resourceRequest, resourceResponse);
     }
     

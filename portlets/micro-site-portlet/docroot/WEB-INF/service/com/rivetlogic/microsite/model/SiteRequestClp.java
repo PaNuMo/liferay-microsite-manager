@@ -86,6 +86,8 @@ public class SiteRequestClp extends BaseModelImpl<SiteRequest>
 		attributes.put("description", getDescription());
 		attributes.put("status", getStatus());
 		attributes.put("response", getResponse());
+		attributes.put("siteId", getSiteId());
+		attributes.put("admin", getAdmin());
 
 		return attributes;
 	}
@@ -150,6 +152,18 @@ public class SiteRequestClp extends BaseModelImpl<SiteRequest>
 
 		if (response != null) {
 			setResponse(response);
+		}
+
+		Long siteId = (Long)attributes.get("siteId");
+
+		if (siteId != null) {
+			setSiteId(siteId);
+		}
+
+		Boolean admin = (Boolean)attributes.get("admin");
+
+		if (admin != null) {
+			setAdmin(admin);
 		}
 	}
 
@@ -393,6 +407,57 @@ public class SiteRequestClp extends BaseModelImpl<SiteRequest>
 		}
 	}
 
+	@Override
+	public long getSiteId() {
+		return _siteId;
+	}
+
+	@Override
+	public void setSiteId(long siteId) {
+		_siteId = siteId;
+
+		if (_siteRequestRemoteModel != null) {
+			try {
+				Class<?> clazz = _siteRequestRemoteModel.getClass();
+
+				Method method = clazz.getMethod("setSiteId", long.class);
+
+				method.invoke(_siteRequestRemoteModel, siteId);
+			}
+			catch (Exception e) {
+				throw new UnsupportedOperationException(e);
+			}
+		}
+	}
+
+	@Override
+	public boolean getAdmin() {
+		return _admin;
+	}
+
+	@Override
+	public boolean isAdmin() {
+		return _admin;
+	}
+
+	@Override
+	public void setAdmin(boolean admin) {
+		_admin = admin;
+
+		if (_siteRequestRemoteModel != null) {
+			try {
+				Class<?> clazz = _siteRequestRemoteModel.getClass();
+
+				Method method = clazz.getMethod("setAdmin", boolean.class);
+
+				method.invoke(_siteRequestRemoteModel, admin);
+			}
+			catch (Exception e) {
+				throw new UnsupportedOperationException(e);
+			}
+		}
+	}
+
 	public BaseModel<?> getSiteRequestRemoteModel() {
 		return _siteRequestRemoteModel;
 	}
@@ -472,6 +537,8 @@ public class SiteRequestClp extends BaseModelImpl<SiteRequest>
 		clone.setDescription(getDescription());
 		clone.setStatus(getStatus());
 		clone.setResponse(getResponse());
+		clone.setSiteId(getSiteId());
+		clone.setAdmin(getAdmin());
 
 		return clone;
 	}
@@ -524,7 +591,7 @@ public class SiteRequestClp extends BaseModelImpl<SiteRequest>
 
 	@Override
 	public String toString() {
-		StringBundler sb = new StringBundler(21);
+		StringBundler sb = new StringBundler(25);
 
 		sb.append("{siteRequestId=");
 		sb.append(getSiteRequestId());
@@ -546,6 +613,10 @@ public class SiteRequestClp extends BaseModelImpl<SiteRequest>
 		sb.append(getStatus());
 		sb.append(", response=");
 		sb.append(getResponse());
+		sb.append(", siteId=");
+		sb.append(getSiteId());
+		sb.append(", admin=");
+		sb.append(getAdmin());
 		sb.append("}");
 
 		return sb.toString();
@@ -553,7 +624,7 @@ public class SiteRequestClp extends BaseModelImpl<SiteRequest>
 
 	@Override
 	public String toXmlString() {
-		StringBundler sb = new StringBundler(34);
+		StringBundler sb = new StringBundler(40);
 
 		sb.append("<model><model-name>");
 		sb.append("com.rivetlogic.microsite.model.SiteRequest");
@@ -599,6 +670,14 @@ public class SiteRequestClp extends BaseModelImpl<SiteRequest>
 			"<column><column-name>response</column-name><column-value><![CDATA[");
 		sb.append(getResponse());
 		sb.append("]]></column-value></column>");
+		sb.append(
+			"<column><column-name>siteId</column-name><column-value><![CDATA[");
+		sb.append(getSiteId());
+		sb.append("]]></column-value></column>");
+		sb.append(
+			"<column><column-name>admin</column-name><column-value><![CDATA[");
+		sb.append(getAdmin());
+		sb.append("]]></column-value></column>");
 
 		sb.append("</model>");
 
@@ -616,6 +695,8 @@ public class SiteRequestClp extends BaseModelImpl<SiteRequest>
 	private String _description;
 	private String _status;
 	private String _response;
+	private long _siteId;
+	private boolean _admin;
 	private BaseModel<?> _siteRequestRemoteModel;
 	private Class<?> _clpSerializerClass = com.rivetlogic.microsite.service.ClpSerializer.class;
 }

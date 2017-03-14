@@ -21,6 +21,15 @@ AUI().add('microsites', function(A) {
 	var portletNamespace = null;
 	var searchSiteTemplateModal = undefined;
 	
+	var CONFIRM_MICRO_SITE_URL = '';
+	var BASE_MICRO_SITE_URL = '';
+	var CHECKBOX_ADMIN = 'microSiteAdminCheckbox';
+	var DROPDOWN_MICROSITES = 'microSiteList';
+	var CONFIRM_MICRO_SITE_ANCHOR = 'completeMicroSite';
+	var SITE_ID = 'siteId';
+	var SET_ADMIN = 'setAdmin';
+	var TABLE_CELL = 'table-cell';
+	
 	A.microsites.setIFrameURL = function(url,pns) {
 		iFrameURL = url;
 		portletNamespace = pns;
@@ -71,11 +80,59 @@ AUI().add('microsites', function(A) {
 			A.one('#'+portletNamespace+'friendlyURL').set('value', '/'+value);
 		});
 	};
-	
+
+	// called when updating a microsite status
+	A.microsites.initUpdateMicroSite = function (portletNS) {
+		portletNamespace = portletNamespace || portletNS;
+		initDropDownMicroSite();
+		setCheckBoxAdminHandler();
+		setConfirmMicroSiteUrl(A.all('#' + portletNamespace + CHECKBOX_ADMIN), A.all('#' + portletNamespace + DROPDOWN_MICROSITES));
+	}
+
+	// helper functions when updating status and set it as 'complete'
+	function setCheckBoxAdminHandler() {
+		A.all('#' + portletNamespace + CHECKBOX_ADMIN).on('change', function (event) {
+			checkBoxHandler(event, this, event.target.ancestor('.' + TABLE_CELL).all('#' + portletNamespace + DROPDOWN_MICROSITES));
+		});
+	}
+
+	function setConfirmBaseUrl(confirmUrl) {
+		BASE_MICRO_SITE_URL = BASE_MICRO_SITE_URL || confirmUrl;
+	}
+
+	function initDropDownMicroSite() {
+		A.all('#' + portletNamespace + DROPDOWN_MICROSITES).on('change', function (event) {
+			setConfirmMicroSiteUrl(A.one('#' + portletNamespace + CHECKBOX_ADMIN), event.target);
+		});
+	}
+
+	function checkBoxHandler(event, checkbox, dropDown) {
+		setConfirmMicroSiteUrl(checkbox, dropDown);
+	}
+
+	function setConfirmMicroSiteUrl(checkbox, dropDown) {
+		if(!checkbox || !dropDown) return;
+		setConfirmBaseUrl(A.all('#' + portletNamespace + CONFIRM_MICRO_SITE_ANCHOR).attr('href'));
+		var siteId = getDropDownValue(dropDown);
+		CONFIRM_MICRO_SITE_URL = buildActionUrl(siteId, checkbox.attr('checked')[0]);
+		A.all('#' + portletNamespace + CONFIRM_MICRO_SITE_ANCHOR).setAttribute('href', CONFIRM_MICRO_SITE_URL.toString());
+	}
+
+	function buildActionUrl (siteId, setAdmin) {
+		var url = new Liferay.PortletURL.createActionURL();
+		url.options.basePortletURL = BASE_MICRO_SITE_URL;
+		url.setParameter(SITE_ID, siteId);
+		url.setParameter(SET_ADMIN, setAdmin);
+		return url;
+	}
+
+	function getDropDownValue(dropDown) {
+		return dropDown.val();
+	}
 },
 '',
 {
-	requires:['aui-base','aui-modal']
+	requires:['aui-base','aui-modal', 'aui-io-request','liferay-portlet-url']
 });
 
 AUI().add('modal_site_template', function(A) {

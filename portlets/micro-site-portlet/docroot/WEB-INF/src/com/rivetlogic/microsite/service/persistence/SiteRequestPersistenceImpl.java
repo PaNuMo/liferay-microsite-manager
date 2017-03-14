@@ -1487,6 +1487,8 @@ public class SiteRequestPersistenceImpl extends BasePersistenceImpl<SiteRequest>
 		siteRequestImpl.setDescription(siteRequest.getDescription());
 		siteRequestImpl.setStatus(siteRequest.getStatus());
 		siteRequestImpl.setResponse(siteRequest.getResponse());
+		siteRequestImpl.setSiteId(siteRequest.getSiteId());
+		siteRequestImpl.setAdmin(siteRequest.isAdmin());
 
 		return siteRequestImpl;
 	}

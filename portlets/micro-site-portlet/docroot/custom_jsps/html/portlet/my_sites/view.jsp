@@ -256,6 +256,9 @@ SimpleDateFormat simpleDateFormat = new SimpleDateFormat("d/M/y");
 					<c:if test='<%=status.equals("rejected") %>'>
 						-&nbsp;<%=siteRequest.get("response") %>
 					</c:if>
+					<c:if test='<%=((Boolean)siteRequest.get("admin")) %>'>
+						-&nbsp; You are the administrator for this site.
+					</c:if>
 				</liferay-ui:search-container-column-text>
 			</liferay-ui:search-container-row>
 			<liferay-ui:search-iterator searchContainer="<%=searchContainer %>"/>
@@ -266,6 +269,7 @@ SimpleDateFormat simpleDateFormat = new SimpleDateFormat("d/M/y");
 			<portlet:actionURL var="actionURL">
 				<portlet:param name="struts_action" value="/add_site_request"/>
 				<portlet:param name="redirect" value="<%=currentURL %>"/>
+				<portlet:param name="add_site" value="true"/>
 			</portlet:actionURL>
 			<aui:form action="<%= actionURL %>">
 				<aui:fieldset>

@@ -71,9 +71,11 @@ public class SiteRequestModelImpl extends BaseModelImpl<SiteRequest>
 			{ "name", Types.VARCHAR },
 			{ "description", Types.VARCHAR },
 			{ "status", Types.VARCHAR },
-			{ "response", Types.VARCHAR }
+			{ "response", Types.VARCHAR },
+			{ "siteId", Types.BIGINT },
+			{ "admin", Types.BOOLEAN }
 		};
-	public static final String TABLE_SQL_CREATE = "create table rivetlogic_micro_site_SiteRequest (siteRequestId LONG not null primary key,groupId LONG,companyId LONG,userId LONG,createDate DATE null,modifiedDate DATE null,name VARCHAR(75) null,description VARCHAR(75) null,status VARCHAR(75) null,response VARCHAR(75) null)";
+	public static final String TABLE_SQL_CREATE = "create table rivetlogic_micro_site_SiteRequest (siteRequestId LONG not null primary key,groupId LONG,companyId LONG,userId LONG,createDate DATE null,modifiedDate DATE null,name VARCHAR(75) null,description VARCHAR(75) null,status VARCHAR(75) null,response VARCHAR(75) null,siteId LONG,admin BOOLEAN)";
 	public static final String TABLE_SQL_DROP = "drop table rivetlogic_micro_site_SiteRequest";
 	public static final String ORDER_BY_JPQL = " ORDER BY siteRequest.createDate DESC";
 	public static final String ORDER_BY_SQL = " ORDER BY rivetlogic_micro_site_SiteRequest.createDate DESC";
@@ -143,6 +145,8 @@ public class SiteRequestModelImpl extends BaseModelImpl<SiteRequest>
 		attributes.put("description", getDescription());
 		attributes.put("status", getStatus());
 		attributes.put("response", getResponse());
+		attributes.put("siteId", getSiteId());
+		attributes.put("admin", getAdmin());
 
 		return attributes;
 	}
@@ -207,6 +211,18 @@ public class SiteRequestModelImpl extends BaseModelImpl<SiteRequest>
 
 		if (response != null) {
 			setResponse(response);
+		}
+
+		Long siteId = (Long)attributes.get("siteId");
+
+		if (siteId != null) {
+			setSiteId(siteId);
+		}
+
+		Boolean admin = (Boolean)attributes.get("admin");
+
+		if (admin != null) {
+			setAdmin(admin);
 		}
 	}
 
@@ -378,6 +394,31 @@ public class SiteRequestModelImpl extends BaseModelImpl<SiteRequest>
 		_response = response;
 	}
 
+	@Override
+	public long getSiteId() {
+		return _siteId;
+	}
+
+	@Override
+	public void setSiteId(long siteId) {
+		_siteId = siteId;
+	}
+
+	@Override
+	public boolean getAdmin() {
+		return _admin;
+	}
+
+	@Override
+	public boolean isAdmin() {
+		return _admin;
+	}
+
+	@Override
+	public void setAdmin(boolean admin) {
+		_admin = admin;
+	}
+
 	public long getColumnBitmask() {
 		return _columnBitmask;
 	}
@@ -419,6 +460,8 @@ public class SiteRequestModelImpl extends BaseModelImpl<SiteRequest>
 		siteRequestImpl.setDescription(getDescription());
 		siteRequestImpl.setStatus(getStatus());
 		siteRequestImpl.setResponse(getResponse());
+		siteRequestImpl.setSiteId(getSiteId());
+		siteRequestImpl.setAdmin(getAdmin());
 
 		siteRequestImpl.resetOriginalValues();
 
@@ -548,12 +591,16 @@ public class SiteRequestModelImpl extends BaseModelImpl<SiteRequest>
 			siteRequestCacheModel.response = null;
 		}
 
+		siteRequestCacheModel.siteId = getSiteId();
+
+		siteRequestCacheModel.admin = getAdmin();
+
 		return siteRequestCacheModel;
 	}
 
 	@Override
 	public String toString() {
-		StringBundler sb = new StringBundler(21);
+		StringBundler sb = new StringBundler(25);
 
 		sb.append("{siteRequestId=");
 		sb.append(getSiteRequestId());
@@ -575,6 +622,10 @@ public class SiteRequestModelImpl extends BaseModelImpl<SiteRequest>
 		sb.append(getStatus());
 		sb.append(", response=");
 		sb.append(getResponse());
+		sb.append(", siteId=");
+		sb.append(getSiteId());
+		sb.append(", admin=");
+		sb.append(getAdmin());
 		sb.append("}");
 
 		return sb.toString();
@@ -582,7 +633,7 @@ public class SiteRequestModelImpl extends BaseModelImpl<SiteRequest>
 
 	@Override
 	public String toXmlString() {
-		StringBundler sb = new StringBundler(34);
+		StringBundler sb = new StringBundler(40);
 
 		sb.append("<model><model-name>");
 		sb.append("com.rivetlogic.microsite.model.SiteRequest");
@@ -628,6 +679,14 @@ public class SiteRequestModelImpl extends BaseModelImpl<SiteRequest>
 			"<column><column-name>response</column-name><column-value><![CDATA[");
 		sb.append(getResponse());
 		sb.append("]]></column-value></column>");
+		sb.append(
+			"<column><column-name>siteId</column-name><column-value><![CDATA[");
+		sb.append(getSiteId());
+		sb.append("]]></column-value></column>");
+		sb.append(
+			"<column><column-name>admin</column-name><column-value><![CDATA[");
+		sb.append(getAdmin());
+		sb.append("]]></column-value></column>");
 
 		sb.append("</model>");
 
@@ -655,6 +714,8 @@ public class SiteRequestModelImpl extends BaseModelImpl<SiteRequest>
 	private String _description;
 	private String _status;
 	private String _response;
+	private long _siteId;
+	private boolean _admin;
 	private long _columnBitmask;
 	private SiteRequest _escapedModel;
 }

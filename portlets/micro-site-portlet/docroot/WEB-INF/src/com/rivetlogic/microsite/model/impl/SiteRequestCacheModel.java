@@ -38,7 +38,7 @@ public class SiteRequestCacheModel implements CacheModel<SiteRequest>,
 	Externalizable {
 	@Override
 	public String toString() {
-		StringBundler sb = new StringBundler(21);
+		StringBundler sb = new StringBundler(25);
 
 		sb.append("{siteRequestId=");
 		sb.append(siteRequestId);
@@ -60,6 +60,10 @@ public class SiteRequestCacheModel implements CacheModel<SiteRequest>,
 		sb.append(status);
 		sb.append(", response=");
 		sb.append(response);
+		sb.append(", siteId=");
+		sb.append(siteId);
+		sb.append(", admin=");
+		sb.append(admin);
 		sb.append("}");
 
 		return sb.toString();
@@ -116,6 +120,9 @@ public class SiteRequestCacheModel implements CacheModel<SiteRequest>,
 			siteRequestImpl.setResponse(response);
 		}
 
+		siteRequestImpl.setSiteId(siteId);
+		siteRequestImpl.setAdmin(admin);
+
 		siteRequestImpl.resetOriginalValues();
 
 		return siteRequestImpl;
@@ -133,6 +140,8 @@ public class SiteRequestCacheModel implements CacheModel<SiteRequest>,
 		description = objectInput.readUTF();
 		status = objectInput.readUTF();
 		response = objectInput.readUTF();
+		siteId = objectInput.readLong();
+		admin = objectInput.readBoolean();
 	}
 
 	@Override
@@ -172,6 +181,9 @@ public class SiteRequestCacheModel implements CacheModel<SiteRequest>,
 		else {
 			objectOutput.writeUTF(response);
 		}
+
+		objectOutput.writeLong(siteId);
+		objectOutput.writeBoolean(admin);
 	}
 
 	public long siteRequestId;
@@ -184,4 +196,6 @@ public class SiteRequestCacheModel implements CacheModel<SiteRequest>,
 	public String description;
 	public String status;
 	public String response;
+	public long siteId;
+	public boolean admin;
 }

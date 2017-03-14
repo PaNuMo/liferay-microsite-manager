@@ -219,6 +219,41 @@ public interface SiteRequestModel extends BaseModel<SiteRequest> {
 	 */
 	public void setResponse(String response);
 
+	/**
+	 * Returns the site ID of this Site Request.
+	 *
+	 * @return the site ID of this Site Request
+	 */
+	public long getSiteId();
+
+	/**
+	 * Sets the site ID of this Site Request.
+	 *
+	 * @param siteId the site ID of this Site Request
+	 */
+	public void setSiteId(long siteId);
+
+	/**
+	 * Returns the admin of this Site Request.
+	 *
+	 * @return the admin of this Site Request
+	 */
+	public boolean getAdmin();
+
+	/**
+	 * Returns <code>true</code> if this Site Request is admin.
+	 *
+	 * @return <code>true</code> if this Site Request is admin; <code>false</code> otherwise
+	 */
+	public boolean isAdmin();
+
+	/**
+	 * Sets whether this Site Request is admin.
+	 *
+	 * @param admin the admin of this Site Request
+	 */
+	public void setAdmin(boolean admin);
+
 	@Override
 	public boolean isNew();
 
